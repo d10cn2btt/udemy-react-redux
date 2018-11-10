@@ -1,0 +1,17 @@
+{
+  "name": "redux-simple-starter",
+  "description": "Simple starter package for Redux with React and Babel support",
+  "main": "index.js",
+  "authors": [
+    "d10cn2btt <truong123>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/StephenGrider/ReduxSimpleStarter",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
