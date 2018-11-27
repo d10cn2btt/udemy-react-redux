@@ -1,0 +1,27 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "plugins": [
+    "react"
+  ],
+//  https://github.com/yannickcr/eslint-plugin-react/issues/447#issuecomment-184617282
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    }
+  },
+  "parser": "babel-eslint",
+  // document is not defined
+  "globals": {
+    "document": true
+  },
+  // module is not defined
+  "env": {
+    "browser": true,
+    "amd": true,
+    "node": true
+  }
+}
