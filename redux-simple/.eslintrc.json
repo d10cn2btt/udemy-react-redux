@@ -6,6 +6,9 @@
   "plugins": [
     "react"
   ],
+  "rules": {
+    "react/prop-types": 0
+  },
 //  https://github.com/yannickcr/eslint-plugin-react/issues/447#issuecomment-184617282
   "parserOptions": {
     "ecmaFeatures": {
