@@ -1,7 +1,9 @@
 import {combineReducers} from 'redux';
+import {reducer as formReducer} from 'redux-form';
 
-import BookReducer from './reducer_posts';
+import PostReducer from './reducer_posts';
 
 export default combineReducers({
-  books: BookReducer,
+  post: PostReducer,
+  form: formReducer
 });

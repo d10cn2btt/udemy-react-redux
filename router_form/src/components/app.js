@@ -1,20 +1,17 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
-import PostsIndex from "../containers/posts_index";
+import {Link} from "react-router-dom";
 
 export default function App() {
   return (
-    <Router>
-      <div>
-        <ul>
-          <li>
-            <Link to="/">Post List</Link>
-          </li>
-        </ul>
-
-        <Route path="/" component={PostsIndex} />
-      </div>
-    </Router>
+    <div>
+      <ul>
+        <li>
+          <Link to="/">Post List</Link>
+        </li>
+        <li>
+          <Link to="/post">Create a new post</Link>
+        </li>
+      </ul>
+    </div>
   )
 }
