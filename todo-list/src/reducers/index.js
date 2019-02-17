@@ -5,5 +5,5 @@ import filterApp from './todo_filter';
 
 export default combineReducers({
   todoApp,
-  filterApp
+  filterApp,
 })

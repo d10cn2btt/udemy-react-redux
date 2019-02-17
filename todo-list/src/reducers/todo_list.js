@@ -1,12 +1,12 @@
 import {combineReducers} from 'redux';
 
-import {ADD_TODO, TOGGLE_TODO} from '../actions/actionTypes';
+import {ADD_TODO, SET_VISIBILITY_FILTER, TOGGLE_TODO, VisibilityFilters} from '../actions/actionTypes';
 
 function todos(state = [], action) {
   switch (action.type) {
     case ADD_TODO:
       return [
-        ...state,
+        // ...state,
         {
           text: action.text,
           commpleted: false,
@@ -26,7 +26,12 @@ function todos(state = [], action) {
       });
 
     default:
-      return state;
+      return [
+        {
+          text: 'abc',
+          commpleted: false
+        }
+      ];
   }
 }
 
@@ -37,15 +42,38 @@ function todos(state = [], action) {
  *
  * Each of these reducers is managing its own part of the global state.
  * The state parameter is different for every reducer, and corresponds to the part of the state it manages.
+ *
+ * The store will pass two arguments to the reducer: the current state tree and the action
+ * Note that a reducer is a pure function. It only computes the next state.
+ * It should be completely predictable: calling it with the same inputs many times should produce the same outputs
  */
 
-const todoApp = combineReducers({
+// const {SHOW_ALL} = VisibilityFilters;
+//
+// const initialState = {
+//   visibilityFilter: SHOW_ALL,
+//   todos: [],
+// };
+//
+// function visibilityFilter(state = SHOW_ALL, action) {
+//   switch (action.type) {
+//     // We don't mutate the `state`
+//     case SET_VISIBILITY_FILTER:
+//       return action.filter;
+//
+//     // We return the previous `state` in the default case.
+//     // It's important to return the previous state for any unknown action.
+//     default:
+//       return state;
+//   }
+// }
+
+
+export default combineReducers({
   // Move filter to file todo_filter.js
   // visibilityFilter,
   todos
 });
-
-export default todoApp;
 
 // export default function todoApp(state = initialState, action) {
 //   return {
