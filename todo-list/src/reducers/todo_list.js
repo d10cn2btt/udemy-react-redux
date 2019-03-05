@@ -9,7 +9,7 @@ function todos(state = [], action) {
         // ...state,
         {
           text: action.text,
-          commpleted: false,
+          completed: false,
         }
       ];
 
@@ -28,8 +28,8 @@ function todos(state = [], action) {
     default:
       return [
         {
-          text: 'abc',
-          commpleted: false
+          text: 'abc1111',
+          completed: false
         }
       ];
   }

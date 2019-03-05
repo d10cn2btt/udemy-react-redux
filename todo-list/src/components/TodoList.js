@@ -5,7 +5,7 @@ import Todo from './Todo'
 const TodoList = ({todos, onTodoClick}) => (
   <ul>
     {todos.map((todo, index) => (
-      <Todo onClick={() => onTodoClick(index)} completed={true} text='bac' key={index}/>
+      <Todo onClick={() => onTodoClick(index)} completed={todo.completed} text={todo.text} key={index}/>
     ))}
   </ul>
 );
