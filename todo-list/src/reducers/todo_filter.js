@@ -6,6 +6,7 @@ function visibilityFilter(state = SHOW_ALL, action) {
   switch (action.type) {
     // We don't mutate the `state`
     case SET_VISIBILITY_FILTER:
+      console.log(state, action);
       return action.filter;
 
     // We return the previous `state` in the default case.

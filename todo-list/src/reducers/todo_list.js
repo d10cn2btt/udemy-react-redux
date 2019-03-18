@@ -6,7 +6,7 @@ function todos(state = [], action) {
   switch (action.type) {
     case ADD_TODO:
       return [
-        // ...state,
+        ...state,
         {
           text: action.text,
           completed: false,
@@ -26,12 +26,7 @@ function todos(state = [], action) {
       });
 
     default:
-      return [
-        {
-          text: 'abc1111',
-          completed: false
-        }
-      ];
+      return state;
   }
 }
 
@@ -67,7 +62,6 @@ function todos(state = [], action) {
 //       return state;
 //   }
 // }
-
 
 export default combineReducers({
   // Move filter to file todo_filter.js

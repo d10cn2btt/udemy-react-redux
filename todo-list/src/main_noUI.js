@@ -1,12 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
-import {createStore, applyMiddleware} from 'redux';
+import React from 'react'
+import { createStore, applyMiddleware } from 'redux'
+import thunkMiddleware from 'redux-thunk'
+import { createLogger } from 'redux-logger'
 
-import App from './components/app';
-import reducers from './reducers';
+import reducers from './reducers'
 
-import './style/style.scss';
+import './style/style.scss'
 
 import {
   addTodo,
@@ -14,11 +13,23 @@ import {
   setVisibilityFilter,
   VisibilityFilters
 } from './actions'
+import { selectSubreddit, fetchPosts } from './actions/reddit'
 
-const store = createStore(reducers);
+const loggerMiddleware = createLogger()
+
+const store = createStore(
+  reducers,
+  applyMiddleware(
+    thunkMiddleware, // lets us dispatch() functions
+    loggerMiddleware // neat middleware that logs actions
+  )
+)
+
+store.dispatch(selectSubreddit('reactjs'))
+store.dispatch(fetchPosts('reactjs')).then(() => console.log(store.getState()))
 
 // Log the initial state
-console.log(store.getState())
+// console.log(store.getState())
 
 // Every time the state changes, log it
 // Note that subscribe() returns a function for unregistering the listener
@@ -26,21 +37,12 @@ const unsubscribe = store.subscribe(() => console.log(store.getState()))
 
 // Dispatch some actions
 // The store will pass two arguments to the reducer: the current state tree and the action
-store.dispatch(addTodo('Learn about actions'))
-store.dispatch(addTodo('Learn about reducers'))
-store.dispatch(addTodo('Learn about store'))
-store.dispatch(toggleTodo(0))
-store.dispatch(toggleTodo(1))
+// store.dispatch(addTodo('Learn about actions'))
+// store.dispatch(addTodo('Learn about reducers'))
+// store.dispatch(addTodo('Learn about store'))
+// store.dispatch(toggleTodo(0))
+// store.dispatch(toggleTodo(1))
 // store.dispatch(setVisibilityFilter(VisibilityFilters.SHOW_COMPLETED))
 
 // Stop listening to state updates
 unsubscribe()
-
-// const createStoreWithMiddleware = applyMiddleware()(createStore);
-
-// ReactDOM.render(
-//     <Provider store={createStoreWithMiddleware(reducers)}>
-//         <App/>
-//     </Provider>,
-//     document.querySelector('.container')
-// );

@@ -5,7 +5,6 @@ import Link from '../components/Link'
 // mapStateToProps?: (state, ownProps?) => Object
 // This object, normally referred to as stateProps, will be merged as props to your connected component
 const mapStateToProps = (state, ownProps) => {
-  console.log(state, ownProps);
   return {
     active: ownProps.filter === state.visibilityFilter
   }

@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+// First param is `props`
 const Link = ({active, children, onClick}) => {
   if (active) {
     return <span>{children}</span>
