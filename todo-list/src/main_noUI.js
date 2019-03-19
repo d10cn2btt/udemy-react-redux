@@ -13,7 +13,7 @@ import {
   setVisibilityFilter,
   VisibilityFilters
 } from './actions'
-import { selectSubreddit, fetchPosts } from './actions/reddit'
+import { fetchPostsIfNeeded } from './actions/reddit'
 
 const loggerMiddleware = createLogger()
 
@@ -21,12 +21,15 @@ const store = createStore(
   reducers,
   applyMiddleware(
     thunkMiddleware, // lets us dispatch() functions
-    loggerMiddleware // neat middleware that logs actions
+    // loggerMiddleware // neat middleware that logs actions
   )
 )
 
-store.dispatch(selectSubreddit('reactjs'))
-store.dispatch(fetchPosts('reactjs')).then(() => console.log(store.getState()))
+let post = store
+  .dispatch(fetchPostsIfNeeded('reactjs'))
+  .then(() => console.log(store.getState()))
+
+console.log(post.then((a) => console.log(a)));
 
 // Log the initial state
 // console.log(store.getState())
