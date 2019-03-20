@@ -1,10 +1,15 @@
 import React from 'react'
 
-const TodoList = ({dispatch, abc}) => {
-  console.log(abc);
+import Todo from './Todo'
+
+const TodoList = ({dispatch, todo_list}) => {
   return (
     <div>
-      abd
+      <ul>
+        {todo_list.map(function (todo) {
+          return <Todo key={todo.id} content={todo}/>
+        })}
+      </ul>
     </div>
   )
 }
