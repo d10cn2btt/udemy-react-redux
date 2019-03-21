@@ -1,22 +1,34 @@
-import { TODO_ADD } from '../actions/actionTypes'
+import { TODO_ADD, TODO_TOGGLE } from '../actions/actionTypes'
 
 const initState = [
   {
     id: 1,
-    name: 'btt',
+    completed: true,
+    content: 'btt',
   },
   {
     id: 2,
-    name: 'abc',
+    completed: false,
+    content: 'abc',
   }
 ]
 
 export default function addTodo(state = initState, action) {
   switch (action.type) {
     case TODO_ADD:
-      return {
+      return [
         ...state,
-      }
+        {
+          id: state.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
+          completed: false,
+          content: action.content
+        }
+      ]
+
+    case TODO_TOGGLE:
+      return state.map(todo => (
+        action.id === todo.id ? {...todo, completed: !todo.completed} : todo
+      ))
 
     default:
       return state

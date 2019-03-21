@@ -1,13 +1,13 @@
 import React from 'react'
 
-import Todo from './Todo'
+import TodoItem from './TodoItem'
 
-const TodoList = ({dispatch, todo_list}) => {
+const TodoList = ({todo_list, toggleTodo}) => {
   return (
     <div>
-      <ul>
+      <ul className='todo-list'>
         {todo_list.map(function (todo) {
-          return <Todo key={todo.id} content={todo}/>
+          return <TodoItem key={todo.id} todo={todo} onClickToggle={toggleTodo}/>
         })}
       </ul>
     </div>

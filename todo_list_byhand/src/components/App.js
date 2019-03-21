@@ -1,6 +1,6 @@
 import React from 'react'
 
-import FormAdd from './FormAdd'
+import AddTodo from '../containers/AddTodo'
 import '../App.scss'
 import VisibleTodoList from '../containers/VisibleTodoList'
 
@@ -8,7 +8,7 @@ const App = () => {
   return (
     <div className="container">
       <div className="jumbotron">
-        <FormAdd/>
+        <AddTodo/>
         <VisibleTodoList/>
       </div>
     </div>
