@@ -1,4 +1,4 @@
-import { TODO_ADD, TODO_TOGGLE } from './actionTypes'
+import { TODO_ADD, TODO_TOGGLE, TODO_FILTER } from './actionTypes'
 
 export function addTodo(content) {
   return {
@@ -11,5 +11,12 @@ export function toggleTodo(id) {
   return {
     type: TODO_TOGGLE,
     id: id,
+  }
+}
+
+export function filterTodo(filter) {
+  return {
+    type: TODO_FILTER,
+    filter: filter,
   }
 }
