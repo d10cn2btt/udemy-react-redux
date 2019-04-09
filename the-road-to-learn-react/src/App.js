@@ -1,62 +1,106 @@
 import React, { Component } from 'react'
+
 import './App.css'
 import FormSearch from "./components/FormSearch"
 import ListBook from "./components/ListBook"
-
-const list = [
-  {
-    title: 'React11',
-    url: 'https://reactjs.org/',
-    author: 'Jordan Walke',
-    num_comments: 3,
-    points: 4,
-    objectID: 0,
-  },
-  {
-    title: 'Redux',
-    url: 'https://redux.js.org/',
-    author: 'Dan Abramov, Andrew Clark',
-    num_comments: 2,
-    points: 5,
-    objectID: 1,
-  },
-]
+import {
+  DEFAULT_QUERY,
+  PATH_BASE,
+  PATH_SEARCH,
+  PARAM_SEARCH,
+  PARAM_PAGE,
+} from './constant'
+import Button from "./components/Button"
 
 class App extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {list, searchTerm: ''}
+    this.state = {
+      results: null,
+      searchKey: '',
+      searchTerm: DEFAULT_QUERY
+    }
+  }
+
+  setSearchTopStories = result => {
+    const {hits, page} = result
+    const {searchKey, results} = this.state
+    const oldHits = results && results[searchKey] ? results[searchKey].hits : []
+    const updatedHits = [
+      ...oldHits,
+      ...hits
+    ]
+    this.setState({
+      results: {
+        ...results,
+        [searchKey]: {hits: updatedHits, page}
+      }
+    })
+  }
+
+  fetchSearchTopStories = (searchTerm, page = 0) => {
+    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}`)
+      .then(response => response.json())
+      .then(result => this.setSearchTopStories(result))
+      .catch(error => error)
+  }
+
+  needsToSearchTopStories(searchTerm) {
+    return !this.state.results[searchTerm];
+  }
+
+  componentDidMount() {
+    const {searchTerm} = this.state
+    this.setState({searchKey: searchTerm})
+
+    this.fetchSearchTopStories(searchTerm)
+  }
+
+  onSearchSubmit = (event) => {
+    event.preventDefault()
+    const {searchTerm} = this.state
+    this.setState({searchKey: searchTerm})
+    if (this.needsToSearchTopStories(searchTerm)) {
+      this.fetchSearchTopStories(searchTerm);
+    }
   }
 
   onDismiss = id => {
-    const newState = this.state.list.filter(item => item.objectID !== id)
-
-    this.setState({list: newState})
+    const {searchKey, results} = this.state
+    const {hits, page} = results[searchKey]
+    const updatedHits = hits.filter(item => item.objectID !== id)
+    this.setState({
+      results: {
+        results,
+        [searchKey]: {hits: updatedHits, page}
+      }
+    })
   }
 
   onSearchChange = (e) => {
     this.setState({searchTerm: e.target.value})
   }
 
-  handleSearch = searchTerm => {
-    return item => item.title.toLowerCase().includes(searchTerm.toLowerCase())
-  }
-
   render() {
-    const {searchTerm, list} = this.state
+    const {searchTerm, results, searchKey} = this.state
+    const page = (results && results[searchKey] && results[searchKey].page) || 0
+    const list = (results && results[searchKey] && results[searchKey].hits) || []
 
     return (
       <div className="page">
         <div className="interactions">
-          <FormSearch valueSearch={searchTerm} onChange={this.onSearchChange}/>
+          <FormSearch valueSearch={searchTerm} onChange={this.onSearchChange} onSubmit={this.onSearchSubmit}/>
         </div>
         <ListBook
           list={list}
-          searchTerm={searchTerm}
           onDismiss={this.onDismiss}
-          handleSearch={this.handleSearch}
         />
+        <div className="interactions">
+          <Button onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}>
+            More
+          </Button>
+        </div>
       </div>
     )
   }

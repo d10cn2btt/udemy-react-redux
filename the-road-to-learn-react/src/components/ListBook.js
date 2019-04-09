@@ -1,10 +1,10 @@
 import React from 'react'
 import Button from "./Button"
 
-const ListBook = ({list, searchTerm, onDismiss, handleSearch}) => (
+const ListBook = ({list, onDismiss}) => (
   <div className="table">
     {
-      list.filter(handleSearch(searchTerm)).map(item =>
+      list.map(item =>
         <div key={item.objectID} className="table-row">
           <span style={{ width: '40%' }}>
             <a href={item.url}>{item.title}</a>
