@@ -4,14 +4,9 @@ import axios from 'axios'
 import './App.css'
 import FormSearch from "./components/FormSearch"
 import ListBook from "./components/ListBook"
-import {
-  DEFAULT_QUERY,
-  PATH_BASE,
-  PATH_SEARCH,
-  PARAM_SEARCH,
-  PARAM_PAGE,
-} from './constant'
+import { DEFAULT_QUERY, PARAM_PAGE, PARAM_SEARCH, PATH_BASE, PATH_SEARCH, } from './constant'
 import Button from "./components/Button"
+import Loading from "./components/Loading"
 
 class App extends Component {
   constructor(props) {
@@ -22,6 +17,9 @@ class App extends Component {
       searchKey: '',
       searchTerm: DEFAULT_QUERY,
       error: null,
+      isLoading: false,
+      sortKey: 'NONE',
+      isSortReverse: false,
     }
   }
 
@@ -37,11 +35,14 @@ class App extends Component {
       results: {
         ...results,
         [searchKey]: {hits: updatedHits, page}
-      }
+      },
+      isLoading: false,
     })
   }
 
   fetchSearchTopStories = (searchTerm, page = 0) => {
+    this.setState({isLoading: true})
+
     axios(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}`)
       .then(result => this.setSearchTopStories(result.data))
       .catch(error => this.setState({error}))
@@ -83,8 +84,13 @@ class App extends Component {
     this.setState({searchTerm: e.target.value})
   }
 
+  onSort = (sortKey) => {
+    const isSortReverse = this.state.sortKey === sortKey && !this.state.isSortReverse
+    this.setState({sortKey, isSortReverse})
+  }
+
   render() {
-    const {searchTerm, results, searchKey, error} = this.state
+    const {searchTerm, results, searchKey, error, isLoading, sortKey, isSortReverse} = this.state
     const page = (results && results[searchKey] && results[searchKey].page) || 0
     const list = (results && results[searchKey] && results[searchKey].hits) || []
 
@@ -100,15 +106,28 @@ class App extends Component {
         <ListBook
           list={list}
           onDismiss={this.onDismiss}
+          onSort={this.onSort}
+          sortKey={sortKey}
+          isSortReverse={isSortReverse}
         />
         <div className="interactions">
-          <Button onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}>
+          <ButtonWithLoading
+            isLoading={isLoading}
+            onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}
+          >
             More
-          </Button>
+          </ButtonWithLoading>
         </div>
       </div>
     )
   }
 }
+
+// https://github.com/the-road-to-learn-react/the-road-to-learn-react/blob/master/manuscript/chapter5.md#higher-order-components
+const withLoading = Component => ({isLoading, ...rest}) => (
+  isLoading ? <Loading/> : <Component {...rest}/>
+)
+
+const ButtonWithLoading = withLoading(Button)
 
 export default App
