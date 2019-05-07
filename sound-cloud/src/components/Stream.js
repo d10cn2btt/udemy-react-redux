@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Stream({tracks = []}) {
+export default function Stream({tracks = []}) {
   return (
     <div>
       {
@@ -11,5 +11,3 @@ function Stream({tracks = []}) {
     </div>
   )
 }
-
-export default Stream
