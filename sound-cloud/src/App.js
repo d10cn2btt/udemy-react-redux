@@ -1,21 +1,25 @@
-import React from 'react'
+import React from 'react';
 
-import Stream from './components/Stream'
-import './App.css'
+import configureStore from './stores/configureStore';
+import * as actions from './actions';
+import Stream from './components/Stream';
+import './App.css';
+
+const tracks = [
+  {
+    title: 'Some track',
+  },
+  {
+    title: 'Some other track',
+  },
+];
+const store = configureStore();
+console.log(store.getState());
+store.dispatch(actions.setTracks(tracks));
+console.log(store.getState());
 
 function App() {
-  const tracks = [
-    {
-      title: 'Some track'
-    },
-    {
-      title: 'Some other track'
-    }
-  ]
-
-  return (
-    <Stream tracks={tracks}/>
-  )
+  return <Stream tracks={tracks} />;
 }
 
-export default App
+export default App;
